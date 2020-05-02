@@ -24,6 +24,11 @@ public class DeclarativeList {
         nextState.clear();
     }
 
+    public void put(ItemDefinition itemDefinition) {
+        Objects.requireNonNull(itemDefinition.getKey(), "ItemDefinition key must not be null");
+        nextState.put(itemDefinition.getKey(), itemDefinition);
+    }
+
     public void endSync() {
         // synchronize the list with the target
         // uses the current state map to assume what is current
@@ -119,11 +124,6 @@ public class DeclarativeList {
         // and clear the next state so it is ready for the next sync
         currentState = new LinkedHashMap<>(actualNextState);
         nextState.clear();
-
-    }
-
-    public LinkedHashMap<String, ItemDefinition> getNextState() {
-        return nextState;
     }
 
     public static class ItemDefinition<I, O> {

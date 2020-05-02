@@ -36,7 +36,7 @@ public class Controller {
         todosDeclarative.beginSync();
 
         for (TodoModel todoModel : todos) {
-            todosDeclarative.getNextState().put(todoModel.getId(), new DeclarativeList.ItemDefinition(todoModel.getId(), todoModel, todoViewFunction, todoUpdateFunction));
+            todosDeclarative.put(new DeclarativeList.ItemDefinition(todoModel.getId(), todoModel, todoViewFunction, todoUpdateFunction));
         }
 
         todosDeclarative.endSync();

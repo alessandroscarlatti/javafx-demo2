@@ -51,45 +51,45 @@ public class DeclarativeListTest {
         BiConsumer<String, Todo> updateTodo = (String text, Todo todo) -> todo.text = text;
 
         declarativeList.beginSync();
-        declarativeList.getNextState().put("key1", new ItemDefinition("key1", "val1", todoItem, updateTodo));
-        declarativeList.getNextState().put("key2", new ItemDefinition("key2", "val2", todoItem, updateTodo));
-        declarativeList.getNextState().put("key3", new ItemDefinition("key3", "val3", todoItem, updateTodo));
-        declarativeList.getNextState().put("key4", new ItemDefinition("key4", "val4", todoItem, updateTodo));
+        declarativeList.put(new ItemDefinition("key1", "val1", todoItem, updateTodo));
+        declarativeList.put(new ItemDefinition("key2", "val2", todoItem, updateTodo));
+        declarativeList.put(new ItemDefinition("key3", "val3", todoItem, updateTodo));
+        declarativeList.put(new ItemDefinition("key4", "val4", todoItem, updateTodo));
         declarativeList.endSync();
 
         Assert.assertEquals(Arrays.asList("item val1", "item val2", "item val3", "item val4"), todoListToString(targetList));
 
         declarativeList.beginSync();
-        declarativeList.getNextState().put("key2", new ItemDefinition("key2", "val2", todoItem, updateTodo));
-        declarativeList.getNextState().put("key1", new ItemDefinition("key1", "val1", todoItem, updateTodo));
-        declarativeList.getNextState().put("key5", new ItemDefinition("key5", "val5", todoItem, updateTodo));
-        declarativeList.getNextState().put("key4", new ItemDefinition("key4", "val4", todoItem, updateTodo));
+        declarativeList.put(new ItemDefinition("key2", "val2", todoItem, updateTodo));
+        declarativeList.put(new ItemDefinition("key1", "val1", todoItem, updateTodo));
+        declarativeList.put(new ItemDefinition("key5", "val5", todoItem, updateTodo));
+        declarativeList.put(new ItemDefinition("key4", "val4", todoItem, updateTodo));
         declarativeList.endSync();
 
         Assert.assertEquals(Arrays.asList("item val2", "item val1", "item val5", "item val4"), todoListToString(targetList));
 
         declarativeList.beginSync();
-        declarativeList.getNextState().put("key6", new ItemDefinition("key6", "val6", todoItem, updateTodo));
+        declarativeList.put(new ItemDefinition("key6", "val6", todoItem, updateTodo));
         declarativeList.endSync();
 
         Assert.assertEquals(Arrays.asList("item val6"), todoListToString(targetList));
 
         declarativeList.beginSync();
-        declarativeList.getNextState().put("key6", new ItemDefinition("key6", "val6.2", todoItem, updateTodo));
+        declarativeList.put(new ItemDefinition("key6", "val6.2", todoItem, updateTodo));
         declarativeList.endSync();
 
         Assert.assertEquals(Arrays.asList("item val6.2"), todoListToString(targetList));
 
         declarativeList.beginSync();
-        declarativeList.getNextState().put("key1", new ItemDefinition("key1", "val1", todoItem, updateTodo));
-        declarativeList.getNextState().put("key6", new ItemDefinition("key6", "val6.2", todoItem, updateTodo));
+        declarativeList.put(new ItemDefinition("key1", "val1", todoItem, updateTodo));
+        declarativeList.put(new ItemDefinition("key6", "val6.2", todoItem, updateTodo));
         declarativeList.endSync();
 
         Assert.assertEquals(Arrays.asList("item val1", "item val6.2"), todoListToString(targetList));
 
         declarativeList.beginSync();
-        declarativeList.getNextState().put("key6", new ItemDefinition("key6", "val6.3", todoItem, updateTodo));
-        declarativeList.getNextState().put("key1", new ItemDefinition("key1", "val1.1", todoItem, updateTodo));
+        declarativeList.put(new ItemDefinition("key6", "val6.3", todoItem, updateTodo));
+        declarativeList.put(new ItemDefinition("key1", "val1.1", todoItem, updateTodo));
         declarativeList.endSync();
 
         Assert.assertEquals(Arrays.asList("item val6.3", "item val1.1"), todoListToString(targetList));
