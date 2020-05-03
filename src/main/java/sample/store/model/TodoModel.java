@@ -1,4 +1,4 @@
-package sample;
+package sample.store.model;
 
 /**
  * @author Alessandro Scarlatti
@@ -7,6 +7,7 @@ package sample;
 public class TodoModel {
     private String id;
     private String text;
+    private boolean completed;
 
     public TodoModel() {
     }
@@ -14,6 +15,12 @@ public class TodoModel {
     public TodoModel(String id, String text) {
         this.id = id;
         this.text = text;
+    }
+
+    public TodoModel(TodoModel other) {
+        this.id = other.id;
+        this.text = other.text;
+        this.completed = other.completed;
     }
 
     public String getId() {
@@ -30,5 +37,13 @@ public class TodoModel {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public boolean getCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 }

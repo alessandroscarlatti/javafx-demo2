@@ -1,12 +1,12 @@
 package sample;
 
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import sample.store.model.TodoModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
