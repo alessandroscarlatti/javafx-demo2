@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.layout.HBox?>
 
-<fx:root prefHeight="27.0" prefWidth="200.0" type="HBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Todo">
-   <children>
-      <CheckBox mnemonicParsing="false" />
-      <Button mnemonicParsing="false" onAction="#doSomething" prefHeight="25.0" prefWidth="100" text="${controller.text}" />
-   </children>
+<fx:root prefHeight="27.0" prefWidth="200.0" stylesheets="@/org/kordamp/bootstrapfx/bootstrapfx.css, @/sample/todo.css" type="HBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Todo">
+    <children>
+        <CheckBox mnemonicParsing="false" styleClass="todo-check-box">
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding></CheckBox>
+        <Button fx:id="todoButton" mnemonicParsing="false" onAction="#doSomething" prefHeight="25.0" styleClass="lbl, lbl-warning, lbl-large" text="Todo Text" HBox.hgrow="ALWAYS" />
+    </children>
 </fx:root>
