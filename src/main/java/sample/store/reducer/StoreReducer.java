@@ -17,11 +17,16 @@ public class StoreReducer implements Reducer<StoreModel> {
         switch (action.getType()) {
             case INIT:
                 state = new StoreModel();
-                state.setTodos(todosReducer.apply(null, action));
+                updateChildState(state, action);
                 return state;
             default:
-                state.setTodos(todosReducer.apply(null, action));
+                state = new StoreModel(state);
+                updateChildState(state, action);
                 return state;
         }
+    }
+
+    private void updateChildState(StoreModel state, AbstractAction action) {
+        state.setTodos(todosReducer.apply(state.getTodos(), action));
     }
 }

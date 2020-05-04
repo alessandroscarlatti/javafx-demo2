@@ -1,13 +1,19 @@
-package sample;
+package sample.view.main;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextField;
+import sample.DeclarativeList;
+import sample.Syncable;
+import sample.view.todo.TodoView;
+import sample.store.Store;
 import sample.store.model.TodoModel;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,10 +21,19 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-public class Controller {
+public class MainController {
 
     @FXML
     private TextField nextTodoTextField;
+
+    private Store store;
+    private FXMLLoader fxmlLoader;
+
+    @Inject
+    public MainController(FXMLLoader fxmlLoader, Store store) {
+        this.store = store;
+        this.fxmlLoader = fxmlLoader;
+    }
 
     private List<TodoModel> todos = new ArrayList<>(Arrays.asList(
         new TodoModel("todo1", "todo item 1"),
@@ -34,20 +49,17 @@ public class Controller {
 
     private DeclarativeList todosDeclarative;
 
-    // could the "Todo" FX class provide these for us?
-    private Function<TodoModel, Todo> todoViewFunction = todoModel -> new Todo(todoModel.getText());
-    private BiConsumer<TodoModel, Todo> todoUpdateFunction = (todoModel, todo) -> {
+    // could the "TodoView" FX class provide these for us?
+    private Function<TodoModel, TodoView> todoViewFunction = todoModel -> new TodoView(todoModel.getText());
+    private BiConsumer<TodoModel, TodoView> todoUpdateFunction = (todoModel, todo) -> {
         System.out.println("updating todo " + todo + " with values " + todoModel);
         Syncable.trySync(todo, todoModel);
     };
 
-    public Controller() {
-        sync();
-    }
-
     @FXML
     private void initialize() {
         nextTodoTextField.textProperty().bindBidirectional(nextTodoTextProperty());
+        sync();
     }
 
     public void sync() {
@@ -78,7 +90,7 @@ public class Controller {
         sync();
     }
 
-    public void addElipses() {
+    public void addEllipses() {
         for (TodoModel todo : todos) {
             todo.setText(todo.getText() + ".");
         }

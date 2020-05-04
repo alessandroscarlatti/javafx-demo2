@@ -1,19 +1,36 @@
 package sample;
 
+import com.gluonhq.ignite.guice.GuiceContext;
+import com.google.inject.AbstractModule;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import sample.view.main.MainView;
 
+import javax.inject.Inject;
 import java.util.Arrays;
 
 public class Main extends Application {
 
+    private AbstractModule guiceModule = new GuiceModule();
+
+    private GuiceContext guiceContext = new GuiceContext(this, () -> Arrays.asList(guiceModule));
+
+    @Inject
+    private FXMLLoader fxmlLoader;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
+
+        guiceContext.init();
+//        Parent root = fxmlLoader.load(getClass().getResourceAsStream("mainView.fxml"));
+
+        Parent root = guiceContext.getInstance(MainView.class);
+//        Parent root = FXMLLoader.load(getClass().getResource("/sample/view/main/mainView.fxml"));
+
         primaryStage.setTitle("Hello World");
         primaryStage.getIcons().addAll(
             new Image("/sample/gear/gear-16.png"),
@@ -28,8 +45,7 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-
     public static void main(String[] args) {
-        launch(args);
+        launch(Main.class, args);
     }
 }

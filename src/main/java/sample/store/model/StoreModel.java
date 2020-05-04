@@ -10,6 +10,13 @@ public class StoreModel {
 
     private List<TodoModel> todos;
 
+    public StoreModel() {
+    }
+
+    public StoreModel(StoreModel other) {
+        this.todos = other.todos;
+    }
+
     public List<TodoModel> getTodos() {
         return todos;
     }

@@ -1,28 +1,30 @@
-package sample;
+package sample.view.todo;
 
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import sample.FXMLUtils;
+import sample.Syncable;
 import sample.store.model.TodoModel;
 
 /**
  * @author Alessandro Scarlatti
  * @since Thursday, 4/30/2020
  */
-public class Todo extends HBox implements Syncable<TodoModel> {
+public class TodoView extends HBox implements Syncable<TodoModel> {
 
     private SimpleObjectProperty<String> text = new SimpleObjectProperty<>("text");
 
     @FXML
     private Button todoButton;
 
-    public Todo() {
+    public TodoView() {
         FXMLUtils.loadFXML(this);
     }
 
-    public Todo(String text) {
+    public TodoView(String text) {
         this();
         this.text.set(text);
         setSyncable(this);

@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" stylesheets="@/org/kordamp/bootstrapfx/bootstrapfx.css, @/sample/main.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<fx:root type="VBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" stylesheets="@/org/kordamp/bootstrapfx/bootstrapfx.css, @/sample/view/main/mainView.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.view.main.MainController">
    <children>
       <HBox prefHeight="100.0">
          <children>
@@ -27,11 +22,11 @@
       </HBox>
       <HBox prefHeight="30.0" styleClass="btn-group-horizontal">
          <children>
-            <ToggleButton mnemonicParsing="false" onAction="#sort" prefWidth="100" styleClass="btn, btn-default, btn-large" text="Shuffle" />
-            <ToggleButton mnemonicParsing="false" onAction="#addElipses" prefHeight="30.0" prefWidth="162.0" styleClass="btn, btn-default, btn-large" text="Add Ellipsis to All" />
+            <ToggleButton mnemonicParsing="false" onAction="#sort" prefHeight="30.0" prefWidth="100" styleClass="btn, btn-default, btn-large" text="Shuffle" />
+            <ToggleButton mnemonicParsing="false" onAction="#addEllipses" prefHeight="30.0" prefWidth="162.0" styleClass="btn, btn-default, btn-large" text="Add Ellipsis to All" />
          </children>
       </HBox>
       <ListView items="${controller.todosFx}" prefHeight="200.0">
       </ListView>
    </children>
-</VBox>
+</fx:root>
