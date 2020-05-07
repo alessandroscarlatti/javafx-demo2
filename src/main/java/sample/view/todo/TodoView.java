@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
-import sample.FXMLUtils;
+import sample.utils.FXMLUtils;
 import sample.Syncable;
 import sample.store.model.TodoModel;
 

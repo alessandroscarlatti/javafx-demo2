@@ -4,6 +4,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import javafx.fxml.FXMLLoader;
+import sample.store.Store;
 import sample.view.main.MainView;
 
 /**
@@ -18,7 +19,7 @@ public class GuiceModule extends AbstractModule {
 
     @Provides
     @Singleton
-    MainView mainView(FXMLLoader fxmlLoader) {
-        return new MainView(fxmlLoader);
+    MainView mainView(FXMLLoader fxmlLoader, Store store) {
+        return new MainView(fxmlLoader, store);
     }
 }

@@ -1,10 +1,7 @@
-package sample;
+package sample.utils;
 
-import com.google.inject.Injector;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-
-import java.io.IOException;
 
 /**
  * @author Alessandro Scarlatti
@@ -18,7 +15,7 @@ public class FXMLUtils {
             fxmlLoader.setRoot(component);
             fxmlLoader.load(component.getClass().getResourceAsStream(fileName));
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error loading fxml for component " + component, e);
         }
     }
 

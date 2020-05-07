@@ -8,6 +8,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import jfxtras.styles.jmetro.JMetro;
+import jfxtras.styles.jmetro.Style;
 import sample.view.main.MainView;
 
 import javax.inject.Inject;
@@ -26,6 +28,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
 
         guiceContext.init();
+
 //        Parent root = fxmlLoader.load(getClass().getResourceAsStream("mainView.fxml"));
 
         Parent root = guiceContext.getInstance(MainView.class);
@@ -41,6 +44,10 @@ public class Main extends Application {
             new Image("/sample/gear/gear-128.png")
         );
         Scene scene = new Scene(root);
+
+        JMetro jMetro = new JMetro(Style.LIGHT);
+        jMetro.setScene(scene);
+
         primaryStage.setScene(scene);
         primaryStage.show();
     }
