@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import sample.AppContext;
 import sample.BindingUtil;
@@ -38,6 +39,9 @@ public class MainView {
     @FXML
     private TextField nextTodoTextField;
 
+    @FXML
+    private ListView todosList;
+
     private List<TodoModel> todos = new ArrayList<>(Arrays.asList(
         new TodoModel("todo1", "todo item 1"),
         new TodoModel("todo2", "todo item 2"),
@@ -48,7 +52,6 @@ public class MainView {
 
     private int nextTodoId = 4;
     private ObservableList<TodoView2> todosViews = FXCollections.observableArrayList();
-    private ObservableList todosFx = FXCollections.observableArrayList();
     private DeclarativeList todosDeclarative;
 
     // could the "TodoView" FX class provide these for us?
@@ -65,7 +68,7 @@ public class MainView {
         FxmlLoader.loadPresenter(this, "mainView.fxml");
         nextTodoTextField.textProperty().bindBidirectional(nextTodoTextProperty());
         todosDeclarative = new DeclarativeList(todosViews);
-        BindingUtil.mapContent(todosFx, todosViews, view -> view.getView());
+        BindingUtil.mapContent(todosList.getItems(), todosViews, view -> view.getView());
         sync();
     }
 
@@ -107,14 +110,6 @@ public class MainView {
         public void setDefaultText(String defaultText) {
             this.defaultText = defaultText;
         }
-    }
-
-    public ObservableList getTodosFx() {
-        return todosFx;
-    }
-
-    public void setTodosFx(ObservableList todosFx) {
-        this.todosFx = todosFx;
     }
 
     public String getNextTodoText() {
