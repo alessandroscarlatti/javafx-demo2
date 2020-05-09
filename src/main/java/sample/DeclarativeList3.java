@@ -1,5 +1,8 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -10,14 +13,21 @@ import java.util.function.Function;
 public class DeclarativeList3 {
 
     private List<Object> targetList;  // the list that will updated when the declarative list is synced
+    private ObservableList<ItemDefinition> itemDefinitionsList;  // the list that contains the unmapped items that will be mapped to the target list
     private LinkedHashMap<String, ItemDefinition> currentState = new LinkedHashMap<>();  // the current state of the list
     private LinkedHashMap<String, ItemDefinition> nextState = new LinkedHashMap<>();  // the next state of the list
 
     public DeclarativeList3(List targetList) {
         this.targetList = targetList;
-    }
+        this.itemDefinitionsList = FXCollections.observableArrayList();
 
-    // internal map of things...
+        // bind the itemDefinitionsList to the target list
+        BindingUtil.mapContent(targetList, itemDefinitionsList, item -> {
+            Object mappedItem = item.getItemMapper().apply(item.getItem());
+            item.setMappedItem(mappedItem);
+            return mappedItem;
+        });
+    }
 
     public void beginSync() {
         // clear the next state list
@@ -70,13 +80,13 @@ public class DeclarativeList3 {
         Set<Object> itemsToRemove = new HashSet<>();
         for (Map.Entry<String, ItemDefinition> currentStateDefinitionEntry : currentState.entrySet()) {
             if (!actualNextState.containsKey(currentStateDefinitionEntry.getKey())) {
-                // this current state item is NOT in the actualNextState, so it needs to be removed
-                itemsToRemove.add(currentStateDefinitionEntry.getValue().getItem());
+                // this current state item definition is NOT in the actualNextState, so it needs to be removed
+                itemsToRemove.add(currentStateDefinitionEntry.getValue());
             }
         }
 
         // now actually remove the items
-        targetList.removeIf(itemsToRemove::contains);
+        itemDefinitionsList.removeIf(itemsToRemove::contains);
 
         // 2. sort items from target to match the order of the next state
 
@@ -85,17 +95,17 @@ public class DeclarativeList3 {
         int i = 0;
         for (Map.Entry<String, ItemDefinition> actualNextStateEntry : actualNextState.entrySet()) {
             ItemDefinition itemDefinition = actualNextStateEntry.getValue();
-            if (itemDefinition.getItem() != null) {
+            if (itemDefinition != null) {
                 // this definition has a target object already created
                 // so add it to the index map.
                 // if it does not have a target object already created
                 // that object will be created later, so it is not needed now.
-                indexMap.put(itemDefinition.getItem(), i);
+                indexMap.put(itemDefinition, i);
             }
             i++;
         }
 
-        targetList.sort(new Comparator<Object>() {
+        itemDefinitionsList.sort(new Comparator<Object>() {
             @Override
             public int compare(Object o1, Object o2) {
                 return Integer.compare(indexMap.get(o1), indexMap.get(o2));
@@ -107,7 +117,7 @@ public class DeclarativeList3 {
         for (Map.Entry<String, ItemDefinition> actualNextStateEntry : actualNextState.entrySet()) {
             ItemDefinition itemDefinition = actualNextStateEntry.getValue();
             if (itemDefinition.getItem() == null) {
-                // this definition does NOT a target object already created
+                // this definition does NOT have a target object already created
                 // so the target object needs to be created, using the factory
                 Object item = itemDefinition.getItemFactory().apply(itemDefinition.getData());
 
@@ -115,10 +125,12 @@ public class DeclarativeList3 {
                 itemDefinition.setItem(item);
 
                 // add the item to the target list
-                targetList.add(j, item);
+                itemDefinitionsList.add(j, itemDefinition);
             }
             j++;
         }
+
+        // todo run update function on all mapped items...
 
         // update the current state map
         // and clear the next state so it is ready for the next sync
@@ -192,6 +204,14 @@ public class DeclarativeList3 {
 
         public void setMappedItem(Object mappedItem) {
             this.mappedItem = mappedItem;
+        }
+
+        public Function<O, M> getItemMapper() {
+            return itemMapper;
+        }
+
+        public void setItemMapper(Function<O, M> itemMapper) {
+            this.itemMapper = itemMapper;
         }
     }
 }

@@ -12,15 +12,16 @@ import static java.util.stream.Collectors.toList;
 
 public class BindingUtil {
 
-    public static <E, F> void mapContent(ObservableList<F> mapped, ObservableList<? extends E> source,
+    public static <E, F> void mapContent(List<F> mapped, ObservableList<? extends E> source,
                                          Function<? super E, ? extends F> mapper) {
         map(mapped, source, mapper);
     }
 
-    private static <E, F> Object map(ObservableList<F> mapped, ObservableList<? extends E> source,
+    private static <E, F> Object map(List<F> mapped, ObservableList<? extends E> source,
             Function<? super E, ? extends F> mapper) {
         final ListContentMapping<E, F> contentMapping = new ListContentMapping<E, F>(mapped, mapper);
-        mapped.setAll(source.stream().map(mapper).collect(toList()));
+        mapped.clear();
+        mapped.addAll(source.stream().map(mapper).collect(toList()));
         source.removeListener(contentMapping);
         source.addListener(contentMapping);
         return contentMapping;
