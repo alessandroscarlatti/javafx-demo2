@@ -16,10 +16,4 @@ public class GuiceModule extends AbstractModule {
     @Override
     protected void configure() {
     }
-
-    @Provides
-    @Singleton
-    MainView mainView(FXMLLoader fxmlLoader, Store store) {
-        return new MainView(fxmlLoader, store);
-    }
 }

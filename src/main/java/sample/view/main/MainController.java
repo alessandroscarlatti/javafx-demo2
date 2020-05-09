@@ -55,6 +55,7 @@ public class MainController {
         System.out.println("updating todo " + todo + " with values " + todoModel);
         Syncable.trySync(todo, todoModel);
     };
+    private Function<TodoView, TodoView> todoTargetFunction = todoView -> todoView;
 
     @FXML
     private void initialize() {

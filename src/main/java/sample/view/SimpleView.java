@@ -4,7 +4,7 @@ package sample.view;
  * @author Alessandro Scarlatti
  * @since Wednesday, 5/6/2020
  */
-public class FxmlView {
+public class SimpleView {
 
     private Object presenter;
     private Object view;

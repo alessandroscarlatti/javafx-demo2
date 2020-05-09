@@ -1,5 +1,7 @@
 package sample;
 
+import com.google.inject.Injector;
+import sample.store.Store;
 import sample.utils.FxmlLoader;
 
 /**
@@ -9,6 +11,8 @@ import sample.utils.FxmlLoader;
 public class AppContext {
 
     private FxmlLoader fxmlLoader;
+    private Injector injector;
+    private Store store;
 
     public FxmlLoader getFxmlLoader() {
         return fxmlLoader;
@@ -16,5 +20,21 @@ public class AppContext {
 
     public void setFxmlLoader(FxmlLoader fxmlLoader) {
         this.fxmlLoader = fxmlLoader;
+    }
+
+    public Injector getInjector() {
+        return injector;
+    }
+
+    public void setInjector(Injector injector) {
+        this.injector = injector;
+    }
+
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
     }
 }

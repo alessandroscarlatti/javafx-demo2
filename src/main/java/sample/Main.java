@@ -2,6 +2,8 @@ package sample;
 
 import com.gluonhq.ignite.guice.GuiceContext;
 import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import jfxtras.styles.jmetro.JMetro;
 import jfxtras.styles.jmetro.Style;
+import sample.utils.FxmlLoader;
 import sample.view.main.MainView;
 
 import javax.inject.Inject;
@@ -27,11 +30,19 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
+        Injector injector = Guice.createInjector(guiceModule);
+
+        AppContext appContext = new AppContext();
+        appContext.setInjector(injector);
+        FxmlLoader fxmlLoader = new FxmlLoader(clazz -> guiceContext.getInstance(clazz), injector::injectMembers);
+        appContext.setFxmlLoader(fxmlLoader);
+
         guiceContext.init();
 
 //        Parent root = fxmlLoader.load(getClass().getResourceAsStream("mainView.fxml"));
 
-        Parent root = guiceContext.getInstance(MainView.class);
+        MainView mainView = new MainView(new MainView.Props(), appContext);
+        Parent root = mainView.getView();
 //        Parent root = FXMLLoader.load(getClass().getResource("/sample/view/main/mainView.fxml"));
 
         primaryStage.setTitle("Hello World");
