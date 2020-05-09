@@ -76,6 +76,7 @@ public class MainView {
         todosDeclarative.beginSync();
 
         for (TodoModel todoModel : todos) {
+//            todosDeclarative.put(ReactFx.render(TodoView2.class, todoModel.getId(), todoModel));
             todosDeclarative.put(new DeclarativeList.ItemDefinition(todoModel.getId(), todoModel, todoViewFunction, todoUpdateFunction));
         }
 
