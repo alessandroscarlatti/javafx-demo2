@@ -28,10 +28,10 @@ public abstract class RxView<P> {
 
     protected abstract List<Node> render();
 
-//    public static <T extends RxView, P> DeclarativeList.ItemDefinition<P, RxView<P>> render(Class<T> clazz, String key, P props) {
+//    public static <T extends RxView, P> DeclarativeList.ElementDefinition<P, RxView<P>> render(Class<T> clazz, String key, P props) {
 //
 //        Function<P, RxView<P>> factory = props ->
 //
-//        return new DeclarativeList.ItemDefinition<P, RxView<P>>(key, props, )
+//        return new DeclarativeList.ElementDefinition<P, RxView<P>>(key, props, )
 //    }
 }

@@ -2,7 +2,7 @@ package sample;
 
 import org.junit.Assert;
 import org.junit.Test;
-import sample.DeclarativeList3.ItemDefinition;
+import sample.DeclarativeList3.ElementDefinition;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -60,53 +60,53 @@ public class DeclarativeList3Test {
         });
 
         declarativeList.beginSync();
-        declarativeList.put(new ItemDefinition("key1", "val1", todoFactory, updateTodo, mapper));
-        declarativeList.put(new ItemDefinition("key2", "val2", todoFactory, updateTodo, mapper));
-        declarativeList.put(new ItemDefinition("key3", "val3", todoFactory, updateTodo, mapper));
-        declarativeList.put(new ItemDefinition("key4", "val4", todoFactory, updateTodo, mapper));
+        declarativeList.put(new DeclarativeList3.ElementDefinition("key1", "val1", todoFactory, updateTodo, mapper));
+        declarativeList.put(new DeclarativeList3.ElementDefinition("key2", "val2", todoFactory, updateTodo, mapper));
+        declarativeList.put(new ElementDefinition("key3", "val3", todoFactory, updateTodo, mapper));
+        declarativeList.put(new DeclarativeList3.ElementDefinition("key4", "val4", todoFactory, updateTodo, mapper));
         declarativeList.endSync();
 
         Assert.assertEquals(Arrays.asList("item val1", "item val2", "item val3", "item val4"), targetList);
 
         declarativeList.beginSync();
-        declarativeList.put(new ItemDefinition("key2", "val2", todoFactory, updateTodo, mapper));
-        declarativeList.put(new ItemDefinition("key1", "val1", todoFactory, updateTodo, mapper));
-        declarativeList.put(new ItemDefinition("key5", "val5", todoFactory, updateTodo, mapper));
-        declarativeList.put(new ItemDefinition("key4", "val4", todoFactory, updateTodo, mapper));
+        declarativeList.put(new ElementDefinition("key2", "val2", todoFactory, updateTodo, mapper));
+        declarativeList.put(new DeclarativeList3.ElementDefinition("key1", "val1", todoFactory, updateTodo, mapper));
+        declarativeList.put(new DeclarativeList3.ElementDefinition("key5", "val5", todoFactory, updateTodo, mapper));
+        declarativeList.put(new ElementDefinition("key4", "val4", todoFactory, updateTodo, mapper));
         declarativeList.endSync();
 
         Assert.assertEquals(Arrays.asList("item val2", "item val1", "item val5", "item val4"), targetList);
 
         declarativeList.beginSync();
-        declarativeList.put(new ItemDefinition("key6", "val6", todoFactory, updateTodo, mapper));
+        declarativeList.put(new DeclarativeList3.ElementDefinition("key6", "val6", todoFactory, updateTodo, mapper));
         declarativeList.endSync();
 
         Assert.assertEquals(Arrays.asList("item val6"), targetList);
 
         declarativeList.beginSync();
-        declarativeList.put(new ItemDefinition("key6", "val6.2", todoFactory, updateTodo, mapper));
+        declarativeList.put(new ElementDefinition("key6", "val6.2", todoFactory, updateTodo, mapper));
         declarativeList.endSync();
 
         Assert.assertEquals(Arrays.asList("item val6.2"), targetList);
 
         declarativeList.beginSync();
-        declarativeList.put(new ItemDefinition("key1", "val1", todoFactory, updateTodo, mapper));
-        declarativeList.put(new ItemDefinition("key6", "val6.2", todoFactory, updateTodo, mapper));
+        declarativeList.put(new ElementDefinition("key1", "val1", todoFactory, updateTodo, mapper));
+        declarativeList.put(new DeclarativeList3.ElementDefinition("key6", "val6.2", todoFactory, updateTodo, mapper));
         declarativeList.endSync();
 
         Assert.assertEquals(Arrays.asList("item val1", "item val6.2"), targetList);
 
         declarativeList.beginSync();
-        declarativeList.put(new ItemDefinition("key6", "val6.3", todoFactory, updateTodo, mapper));
-        declarativeList.put(new ItemDefinition("key1", "val1.1", todoFactory, updateTodo, mapper));
+        declarativeList.put(new ElementDefinition("key6", "val6.3", todoFactory, updateTodo, mapper));
+        declarativeList.put(new DeclarativeList3.ElementDefinition("key1", "val1.1", todoFactory, updateTodo, mapper));
         declarativeList.endSync();
 
         Assert.assertEquals(Arrays.asList("item val6.3", "item val1.1"), targetList);
 
         // update props without changing order
         declarativeList.beginSync();
-        declarativeList.put(new ItemDefinition("key6", "val6.4", todoFactory, updateTodo, mapper));
-        declarativeList.put(new ItemDefinition("key1", "val.test", todoFactory, updateTodo, mapper));
+        declarativeList.put(new ElementDefinition("key6", "val6.4", todoFactory, updateTodo, mapper));
+        declarativeList.put(new DeclarativeList3.ElementDefinition("key1", "val.test", todoFactory, updateTodo, mapper));
         declarativeList.endSync();
 
         Assert.assertEquals(Arrays.asList("item val6.4", "item test"), targetList);

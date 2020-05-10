@@ -13,16 +13,18 @@ import java.util.function.Function;
 public class DeclarativeList3 {
 
     private List<Object> targetList;  // the list that will updated when the declarative list is synced
-    private ObservableList<ItemDefinition> itemDefinitionsList;  // the list that contains the unmapped items that will be mapped to the target list
-    private LinkedHashMap<String, ItemDefinition> currentState = new LinkedHashMap<>();  // the current state of the list
-    private LinkedHashMap<String, ItemDefinition> nextState = new LinkedHashMap<>();  // the next state of the list
+    private ObservableList<ElementDefinition> elementDefinitionsList;  // the list that contains the unmapped items that will be mapped to the target list
+    private LinkedHashMap<String, ElementDefinition> currentState = new LinkedHashMap<>();  // the current state of the list
+    private LinkedHashMap<String, ElementDefinition> nextState = new LinkedHashMap<>();  // the next state of the list
 
     public DeclarativeList3(List targetList) {
         this.targetList = targetList;
-        this.itemDefinitionsList = FXCollections.observableArrayList();
+        this.elementDefinitionsList = FXCollections.observableArrayList();
 
-        // bind the itemDefinitionsList to the target list
-        BindingUtil.mapContent(targetList, itemDefinitionsList, item -> {
+        // bind the elementDefinitionsList to the target list
+        BindingUtil.mapContent(targetList, elementDefinitionsList, item -> {
+            // todo can we use the cached mappedItem field instead?
+            // todo purpose being to keep from constantly calling render!
             Object mappedItem = item.getItemMapper().apply(item.getItem());
             item.setMappedItem(mappedItem);
             return mappedItem;
@@ -34,36 +36,36 @@ public class DeclarativeList3 {
         nextState.clear();
     }
 
-    public void put(ItemDefinition itemDefinition) {
-        Objects.requireNonNull(itemDefinition.getKey(), "ItemDefinition key must not be null");
-        nextState.put(itemDefinition.getKey(), itemDefinition);
+    public void put(ElementDefinition elementDefinition) {
+        Objects.requireNonNull(elementDefinition.getKey(), "ElementDefinition key must not be null");
+        nextState.put(elementDefinition.getKey(), elementDefinition);
     }
 
     public void endSync() {
         // synchronize the list with the target
         // uses the current state map to assume what is current
 
-        LinkedHashMap<String, ItemDefinition> actualNextState = new LinkedHashMap<>();
+        LinkedHashMap<String, ElementDefinition> actualNextState = new LinkedHashMap<>();
 
 
         // ALSO modify the target list using the data from the definition
 
-        for (Map.Entry<String, ItemDefinition> definitionEntry : nextState.entrySet()) {
+        for (Map.Entry<String, ElementDefinition> definitionEntry : nextState.entrySet()) {
             // iterate through the nextState definitions in order
 
             if (currentState.containsKey(definitionEntry.getKey())) {
                 // current state already contains this key
                 // so 1. Insert into actualNextState from the corresponding value in current state.
-                ItemDefinition currentItemDefinition = currentState.get(definitionEntry.getKey());
-                ItemDefinition nextItemDefinition = nextState.get(definitionEntry.getKey());
-                actualNextState.put(definitionEntry.getKey(), currentItemDefinition);
+                ElementDefinition currentElementDefinition = currentState.get(definitionEntry.getKey());
+                ElementDefinition nextElementDefinition = nextState.get(definitionEntry.getKey());
+                actualNextState.put(definitionEntry.getKey(), currentElementDefinition);
 
                 // but the actual definition data may be different on this iteration...
                 // so we need to call the update function
-                currentItemDefinition.update.accept(nextItemDefinition.getData(), currentItemDefinition.getItem());
+                currentElementDefinition.update.accept(nextElementDefinition.getData(), currentElementDefinition.getItem());
 
                 // update the data field on the current item definition object
-                currentItemDefinition.setData(nextItemDefinition.getData());
+                currentElementDefinition.setData(nextElementDefinition.getData());
             } else {
                 // current state does not contain this key
                 // so just insert the given definition as is
@@ -78,7 +80,7 @@ public class DeclarativeList3 {
 
         // collect the items to remove
         Set<Object> itemsToRemove = new HashSet<>();
-        for (Map.Entry<String, ItemDefinition> currentStateDefinitionEntry : currentState.entrySet()) {
+        for (Map.Entry<String, ElementDefinition> currentStateDefinitionEntry : currentState.entrySet()) {
             if (!actualNextState.containsKey(currentStateDefinitionEntry.getKey())) {
                 // this current state item definition is NOT in the actualNextState, so it needs to be removed
                 itemsToRemove.add(currentStateDefinitionEntry.getValue());
@@ -86,26 +88,26 @@ public class DeclarativeList3 {
         }
 
         // now actually remove the items
-        itemDefinitionsList.removeIf(itemsToRemove::contains);
+        elementDefinitionsList.removeIf(itemsToRemove::contains);
 
         // 2. sort items from target to match the order of the next state
 
         // create an index map
         Map<Object, Integer> indexMap = new HashMap<>();
         int i = 0;
-        for (Map.Entry<String, ItemDefinition> actualNextStateEntry : actualNextState.entrySet()) {
-            ItemDefinition itemDefinition = actualNextStateEntry.getValue();
-            if (itemDefinition != null) {
+        for (Map.Entry<String, ElementDefinition> actualNextStateEntry : actualNextState.entrySet()) {
+            ElementDefinition elementDefinition = actualNextStateEntry.getValue();
+            if (elementDefinition != null) {
                 // this definition has a target object already created
                 // so add it to the index map.
                 // if it does not have a target object already created
                 // that object will be created later, so it is not needed now.
-                indexMap.put(itemDefinition, i);
+                indexMap.put(elementDefinition, i);
             }
             i++;
         }
 
-        itemDefinitionsList.sort(new Comparator<Object>() {
+        elementDefinitionsList.sort(new Comparator<Object>() {
             @Override
             public int compare(Object o1, Object o2) {
                 return Integer.compare(indexMap.get(o1), indexMap.get(o2));
@@ -114,18 +116,18 @@ public class DeclarativeList3 {
 
         // 3. insert new items from the next state in the appropriate position
         int j = 0;
-        for (Map.Entry<String, ItemDefinition> actualNextStateEntry : actualNextState.entrySet()) {
-            ItemDefinition itemDefinition = actualNextStateEntry.getValue();
-            if (itemDefinition.getItem() == null) {
+        for (Map.Entry<String, ElementDefinition> actualNextStateEntry : actualNextState.entrySet()) {
+            ElementDefinition elementDefinition = actualNextStateEntry.getValue();
+            if (elementDefinition.getItem() == null) {
                 // this definition does NOT have a target object already created
                 // so the target object needs to be created, using the factory
-                Object item = itemDefinition.getItemFactory().apply(itemDefinition.getData());
+                Object item = elementDefinition.getItemFactory().apply(elementDefinition.getData());
 
                 // add the item to the definition
-                itemDefinition.setItem(item);
+                elementDefinition.setItem(item);
 
                 // add the item to the target list
-                itemDefinitionsList.add(j, itemDefinition);
+                elementDefinitionsList.add(j, elementDefinition);
             }
             j++;
         }
@@ -138,7 +140,7 @@ public class DeclarativeList3 {
         nextState.clear();
     }
 
-    public static class ItemDefinition<I, O, M> {
+    public static class ElementDefinition<I, O, M> {
         private String key;  // the key for this item
         private Object data;  // the definition data that will be used to create the item
         private Function<I, O> itemFactory;  // the function to use when creating the item
@@ -147,10 +149,10 @@ public class DeclarativeList3 {
         private Object item;  // the item that is created from this definition
         private Object mappedItem;  // the item that is mapped from the item created from this definition
 
-        public ItemDefinition() {
+        public ElementDefinition() {
         }
 
-        public ItemDefinition(String key, I data, Function<I, O> itemFactory, BiConsumer<I, O> update, Function<O, M> itemMapper) {
+        public ElementDefinition(String key, I data, Function<I, O> itemFactory, BiConsumer<I, O> update, Function<O, M> itemMapper) {
             this.key = key;
             this.data = data;
             this.itemFactory = itemFactory;
