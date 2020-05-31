@@ -79,6 +79,10 @@ public class FxmlLoader {
         }
     }
 
+    public static void loadView(Object controller, String fxmlFileResourcePath) {
+        loadPresenter(controller, fxmlFileResourcePath);
+    }
+
     public static void loadPresenter(Object presenter, String fxmlFileResourcePath) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();

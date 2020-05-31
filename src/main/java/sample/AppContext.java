@@ -14,6 +14,15 @@ public class AppContext {
     private Injector injector;
     private Store store;
 
+    private static AppContext instance;
+
+    public static AppContext getInstance() {
+        if (instance == null)
+            instance = new AppContext();
+
+        return instance;
+    }
+
     public FxmlLoader getFxmlLoader() {
         return fxmlLoader;
     }

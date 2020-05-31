@@ -1,13 +1,15 @@
-apply plugin: 'java'
+subprojects {
+    apply plugin: 'java'
 
-repositories {
-    mavenCentral()
-}
+    repositories {
+        mavenCentral()
+    }
 
-dependencies {
-    compile 'org.kordamp.bootstrapfx:bootstrapfx-core:0.2.4'
-    compile 'org.jfxtras:jmetro:8.6.10'
-    compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
-    compile 'com.gluonhq:ignite-guice:1.0.2'
-    testCompile 'junit:junit:4.12'
+    dependencies {
+        compile 'org.kordamp.bootstrapfx:bootstrapfx-core:0.2.4'
+        compile 'org.jfxtras:jmetro:8.6.10'
+        compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
+        compile 'com.gluonhq:ignite-guice:1.0.2'
+        testCompile 'junit:junit:4.12'
+    }
 }
