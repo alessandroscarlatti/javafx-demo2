@@ -1,4 +1,4 @@
-package demo;
+package demo.view;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +12,7 @@ import java.util.List;
  * @author Alessandro Scarlatti
  * @since Sunday, 5/31/2020
  */
-public class TodoList {
+public class TodoListView {
 
     @FXML
     private VBox view;
@@ -20,11 +20,11 @@ public class TodoList {
     @FXML
     private ListView todoList;
 
-    public TodoList(List<String> todos) {
+    public TodoListView(List<String> todos) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setController(this);
-            fxmlLoader.load(this.getClass().getResourceAsStream("/fxml/TodoList.fxml"));
+            fxmlLoader.load(this.getClass().getResourceAsStream("/fxml/TodoListView.fxml"));
 
             // now that the @FXML items have been injected we can use them.
             todoList.getItems().setAll(todos);

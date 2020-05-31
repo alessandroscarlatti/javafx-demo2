@@ -4,5 +4,5 @@
 <?import javafx.scene.layout.VBox?>
 <VBox fx:id="view" maxHeight="200" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0"
       prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
-    <ListView fx:id="todoList"/>
+    <ListView fx:id="todoListView"/>
 </VBox>
