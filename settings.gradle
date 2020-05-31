@@ -1,4 +1,6 @@
 include (
+        "Phase_Legacy",
         "Phase_HelloWorld",
-        "Phase_Read"
+        "Phase_ReadSimple",
+        "Phase_ReadModel",
 )

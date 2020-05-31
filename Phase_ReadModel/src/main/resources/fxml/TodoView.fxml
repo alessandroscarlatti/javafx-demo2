@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import demo.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import demo.control.ReadOnlyCheckBox?>
+<HBox fx:id="view" maxHeight="200" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+    <ReadOnlyCheckBox fx:id="todoCheckBox"/>
+    <Label fx:id="todoLabel" text="todo text goes here"/>
+</HBox>
