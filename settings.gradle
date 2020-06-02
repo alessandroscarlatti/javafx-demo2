@@ -3,4 +3,5 @@ include (
         "Phase_HelloWorld",
         "Phase_ReadSimple",
         "Phase_ReadModel",
+        "Phase_UpdateModel",
 )

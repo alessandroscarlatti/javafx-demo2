@@ -1,9 +1,11 @@
 package demo;
 
 import demo.model.Todo;
+import demo.model.TodoViewModel;
 import demo.view.TodoListView;
 import javafx.scene.Parent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +18,12 @@ public class TodoListViewTest {
         @Override
         protected Parent getView() {
             List<Todo> todos = TestUtils.todosSet1();
-            TodoListView todoListView = new TodoListView(todos);
+            List<TodoViewModel> todoViewModels = new ArrayList<>();
+            for (Todo todo : todos) {
+                todoViewModels.add(new TodoViewModel(todo));
+            }
+
+            TodoListView todoListView = new TodoListView(todoViewModels);
             return todoListView.getView();
         }
     }

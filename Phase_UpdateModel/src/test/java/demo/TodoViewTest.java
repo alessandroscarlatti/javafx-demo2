@@ -1,5 +1,6 @@
 package demo;
 
+import demo.model.TodoViewModel;
 import demo.view.TodoView;
 import javafx.scene.Parent;
 
@@ -12,7 +13,7 @@ public class TodoViewTest {
     public static class CheckedTodo extends TestUtils.TestingView {
         @Override
         protected Parent getView() {
-            TodoView todoView = new TodoView(TestUtils.todo("todo1", "this is todo1", true));
+            TodoView todoView = new TodoView(new TodoViewModel(TestUtils.todo("todo1", "this is todo1", true)));
             return todoView.getView();
         }
     }
@@ -20,7 +21,7 @@ public class TodoViewTest {
     public static class UncheckedTodo extends TestUtils.TestingView {
         @Override
         protected Parent getView() {
-            TodoView todoView = new TodoView(TestUtils.todo("todo1", "this is todo1", false));
+            TodoView todoView = new TodoView(new TodoViewModel(TestUtils.todo("todo1", "this is todo1", false)));
             return todoView.getView();
         }
     }
