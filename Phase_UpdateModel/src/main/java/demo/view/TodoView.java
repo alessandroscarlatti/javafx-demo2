@@ -2,10 +2,13 @@ package demo.view;
 
 import demo.model.Todo;
 import demo.model.TodoViewModel;
+import javafx.beans.binding.Binding;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.beans.value.ObservableValueBase;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -37,10 +40,24 @@ public class TodoView {
             todoLabel.setText(todo.getText());
             todoCheckBox.setSelected(todo.isCompleted());
 
+            todo.completedProperty().bind(todoCheckBox.selectedProperty());
+
             todoCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
                 System.out.println("todo " + todo.getId() + " set completed to " + newValue);
-                todo.setCompleted(newValue);
             });
+
+
+            todoLabel.styleProperty().bind(Bindings.createObjectBinding(() -> {
+                if (todo.isCompleted()) {
+                    // completed
+                    return "-fx-text-fill: gray;";
+                } else {
+                    // not completed
+                    return "-fx-text-fill: blue;";
+                }
+            }, todo.completedProperty()));
+
+
         } catch (Exception e) {
             throw new RuntimeException("Error initializing component", e);
         }

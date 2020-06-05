@@ -1,10 +1,14 @@
 package demo.view;
 
 import demo.model.TodoViewModel;
+import javafx.beans.binding.Bindings;
+import javafx.beans.value.ObservableValue;
+import javafx.beans.value.ObservableValueBase;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
@@ -25,6 +29,9 @@ public class TodoListView {
     private VBox view;
 
     @FXML
+    private Label numberCompleted;
+
+    @FXML
     private ListView<TodoViewModel> todoList;
 
     public TodoListView(List<TodoViewModel> todos) {
@@ -37,6 +44,8 @@ public class TodoListView {
 
             todoList.getItems().setAll(todos);
             todoList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+            numberCompleted.setText(todos.size() + " Completed");
         } catch (Exception e) {
             throw new RuntimeException("Error initializing component", e);
         }
