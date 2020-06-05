@@ -1,9 +1,11 @@
 package demo.view;
 
+import demo.model.Todo;
 import demo.model.TodoViewModel;
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
-import javafx.beans.value.ObservableValue;
-import javafx.beans.value.ObservableValueBase;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -13,11 +15,9 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.VBox;
-import javafx.util.Callback;
 
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * @author Alessandro Scarlatti
@@ -42,10 +42,14 @@ public class TodoListView {
 
             todoList.setCellFactory(param -> new CustomListCell<>(item -> new TodoView(item).getView()));
 
-            todoList.getItems().setAll(todos);
+            ObservableList<TodoViewModel> todosObservableList = FXCollections.observableArrayList(todo -> new Observable[]{ todo.completedProperty() });
+            todosObservableList.addAll(todos);
+            todoList.setItems(todosObservableList);
+
             todoList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-            numberCompleted.setText(todos.size() + " Completed");
+            numberCompleted.textProperty().bind(Bindings.createStringBinding(() -> todoList.getItems().stream().filter(TodoViewModel::isCompleted).count() + " Completed", todoList.getItems()));
+
         } catch (Exception e) {
             throw new RuntimeException("Error initializing component", e);
         }

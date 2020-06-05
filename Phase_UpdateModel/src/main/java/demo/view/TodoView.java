@@ -40,7 +40,7 @@ public class TodoView {
             todoLabel.setText(todo.getText());
             todoCheckBox.setSelected(todo.isCompleted());
 
-            todo.completedProperty().bind(todoCheckBox.selectedProperty());
+            todoCheckBox.selectedProperty().bindBidirectional(todo.completedProperty());
 
             todoCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
                 System.out.println("todo " + todo.getId() + " set completed to " + newValue);
