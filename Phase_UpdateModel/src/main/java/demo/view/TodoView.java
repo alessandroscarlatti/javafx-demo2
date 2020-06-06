@@ -1,14 +1,7 @@
 package demo.view;
 
-import demo.model.Todo;
 import demo.model.TodoViewModel;
-import javafx.beans.binding.Binding;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.beans.value.ObservableValueBase;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,6 +11,8 @@ import javafx.scene.control.Label;
 /**
  * @author Alessandro Scarlatti
  * @since Sunday, 5/31/2020
+ *
+ * The todo item itself, rendered inside the todo list
  */
 public class TodoView {
 
@@ -36,17 +31,21 @@ public class TodoView {
             fxmlLoader.setController(this);
             fxmlLoader.load(this.getClass().getResourceAsStream("/fxml/TodoView.fxml"));
 
-            // now that the @FXML items have been injected we can use them.
+            // a label shows the todo text
             todoLabel.setText(todo.getText());
+
+            // a checkbox shows the state of the todo
             todoCheckBox.setSelected(todo.isCompleted());
 
+            // the checkbox and the view model are bound together
             todoCheckBox.selectedProperty().bindBidirectional(todo.completedProperty());
 
             todoCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                // when the checkbox is changed we respond
                 System.out.println("todo " + todo.getId() + " set completed to " + newValue);
             });
 
-
+            // the color of the text is derived from the state of the todo
             todoLabel.styleProperty().bind(Bindings.createObjectBinding(() -> {
                 if (todo.isCompleted()) {
                     // completed
@@ -56,7 +55,6 @@ public class TodoView {
                     return "-fx-text-fill: blue;";
                 }
             }, todo.completedProperty()));
-
 
         } catch (Exception e) {
             throw new RuntimeException("Error initializing component", e);
